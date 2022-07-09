@@ -2,7 +2,9 @@
 
 namespace Module\Infrastructure\Auth;
 
+use Module\Auth\useCases\Login\Auth;
 use Module\Auth\useCases\Login\AuthRepository;
+use Module\Auth\useCases\Login\AuthResult;
 
 class AuthRepositoryInMemory implements AuthRepository
 {
@@ -18,25 +20,19 @@ class AuthRepositoryInMemory implements AuthRepository
         $this->users[] = new UserInMemory('test2@gmail.com', '123456');
     }
 
-    public function getByCredentials(string $email, string $password): array
+    public function getByCredentials(Auth $auth): AuthResult
     {
         $userIn = null;
         foreach ($this->users as $user) {
-            if ($user->getEmail() === $email) {
+            if ($user->getEmail() === $auth->getEmail()) {
                 $userIn = $user;
                 break;
             }
         }
-
-        if (!$userIn) {
-            return [false,'Login ou mot de passe incorrect'];
+        if ($userIn) {
+            return new AuthResult($userIn->getEmail(), $userIn->getPassword());
         }
-
-        if ($userIn->getPassword() !== $password) {
-            return [false, "Votre mot de passe  n'est pas valide"];
-        }
-
-        return [true, "Utilisateur connecté"];
+        return new AuthResult(null, null);
     }
 
 }

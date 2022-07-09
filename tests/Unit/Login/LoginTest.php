@@ -2,6 +2,7 @@
 
 namespace Tests\Unit\Login;
 
+use Module\Auth\Exceptions\ErrorAuthException;
 use Module\Auth\useCases\Login\LoginCommand;
 use Module\Auth\useCases\Login\LoginUser;
 use Module\Infrastructure\Auth\AuthRepositoryInMemory;
@@ -60,8 +61,9 @@ class LoginTest extends TestCase
         $authRepository = new AuthRepositoryInMemory();
         $loginUser = new LoginUser($authRepository);
 
+        $this->expectException(ErrorAuthException::class);
+        $this->expectExceptionMessage("Cet adresse email : $loginCommand->email n'est pas valide");
         $loginResponse = $loginUser->__invoke($loginCommand);
-        $this->expectException(UserEmailException::class);
     }
 
 }

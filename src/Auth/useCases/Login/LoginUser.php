@@ -3,6 +3,8 @@ declare(strict_types=1);
 
 namespace Module\Auth\useCases\Login;
 
+use Module\Auth\Exceptions\ErrorAuthException;
+
 final class LoginUser
 {
 
@@ -18,22 +20,9 @@ final class LoginUser
      */
     public function __invoke(LoginCommand $loginCommand): LoginResponse {
         $response = new LoginResponse();
-
-        if(!$loginCommand->email || !$loginCommand->password) {
-            $response->message = 'Ces paramètres ne sont pas renseignés';
-            return $response;
-        }
-
-        list($status, $message) = $this->authRepository->getByCredentials($loginCommand->email, $loginCommand->password);
-
-        if (!$status) {
-            $response->message = $message;
-            return $response;
-        }
-
-        $response->isLogged = true;
-        $response->message = $message;
-        return $response;
+        $auth = Auth::compose($loginCommand->email, $loginCommand->password);
+        $authResult = $this->authRepository->getByCredentials($auth);
+        return $auth->login($authResult, $response);
     }
 
 }
