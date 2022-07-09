@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace Module\Auth\useCases\Login;
 
-class LoginUser
+final class LoginUser
 {
 
     private AuthRepository $authRepository;
@@ -24,15 +24,16 @@ class LoginUser
             return $response;
         }
 
-        $user = $this->authRepository->getByCredentials($loginCommand->email, $loginCommand->password);
+        list($status, $message) = $this->authRepository->getByCredentials($loginCommand->email, $loginCommand->password);
 
-        if (!$user) {
-            $response->message = 'Cet utilisateur n\'existe pas';
+        if (!$status) {
+            $response->message = $message;
             return $response;
         }
 
         $response->isLogged = true;
-        $response->message = 'Utilisateur connecté';
+        $response->message = $message;
         return $response;
     }
+
 }

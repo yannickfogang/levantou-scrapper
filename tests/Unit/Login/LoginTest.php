@@ -1,6 +1,6 @@
 <?php
 
-namespace Login;
+namespace Tests\Unit\Login;
 
 use Module\Auth\useCases\Login\LoginCommand;
 use Module\Auth\useCases\Login\LoginUser;
@@ -15,12 +15,8 @@ class LoginTest extends TestCase
     }
 
     public function test_user_can_login() {
-        $email = 'test@gmail.com';
-        $password = '123456';
 
-        $loginCommand = new LoginCommand();
-        $loginCommand->email = $email;
-        $loginCommand->password = $password;
+        $loginCommand = LoginCommandBuilder::asLogin()->build();
 
         $authRepository = new AuthRepositoryInMemory();
         $loginUser = new LoginUser($authRepository);
@@ -28,6 +24,44 @@ class LoginTest extends TestCase
         $loginResponse = $loginUser->__invoke($loginCommand);
         $this->assertTrue($loginResponse->isLogged);
         $this->assertEquals('Utilisateur connecté', $loginResponse->message);
+    }
+
+    public function test_user_login_with_wrong_credentials() {
+        $loginCommand = LoginCommandBuilder::asLogin()
+            ->withEmail('tessdqsdqsd@qsdqsd.qsdqsd')
+            ->build();
+
+        $authRepository = new AuthRepositoryInMemory();
+        $loginUser = new LoginUser($authRepository);
+
+        $loginResponse = $loginUser->__invoke($loginCommand);
+        $this->assertFalse($loginResponse->isLogged);
+        $this->assertEquals("Login ou mot de passe incorrect", $loginResponse->message);
+    }
+
+    public function test_user_login_with_wrong_password() {
+        $loginCommand = LoginCommandBuilder::asLogin()
+            ->withPassword('azeazeazeaze')
+            ->build();
+
+        $authRepository = new AuthRepositoryInMemory();
+        $loginUser = new LoginUser($authRepository);
+
+        $loginResponse = $loginUser->__invoke($loginCommand);
+        $this->assertFalse($loginResponse->isLogged);
+        $this->assertEquals("Votre mot de passe  n'est pas valide", $loginResponse->message);
+    }
+
+    public function test_user_login_with_invalid_email() {
+        $loginCommand = LoginCommandBuilder::asLogin()
+            ->withEmail('qdsdsfsdfsdf')
+            ->build();
+
+        $authRepository = new AuthRepositoryInMemory();
+        $loginUser = new LoginUser($authRepository);
+
+        $loginResponse = $loginUser->__invoke($loginCommand);
+        $this->expectException(UserEmailException::class);
     }
 
 }

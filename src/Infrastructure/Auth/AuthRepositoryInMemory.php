@@ -7,36 +7,42 @@ use Module\Auth\useCases\Login\AuthRepository;
 class AuthRepositoryInMemory implements AuthRepository
 {
     /**
-     * @var User[]
+     * @var UserInMemory[]
      */
     private array $users = [];
 
     public function __construct()
     {
-        $this->users[] = new User('test@gmail.com', '123456');
-        $this->users[] = new User('test1@gmail.com', '123456');
-        $this->users[] = new User('test2@gmail.com', '123456');
+        $this->users[] = new UserInMemory('test@gmail.com', '123456');
+        $this->users[] = new UserInMemory('test1@gmail.com', '123456');
+        $this->users[] = new UserInMemory('test2@gmail.com', '123456');
     }
 
-    public function getByCredentials(string $email, string $password): bool
+    public function getByCredentials(string $email, string $password): array
     {
         $userIn = null;
         foreach ($this->users as $user) {
-            if ($user->getEmail() === $email && $user->getPassword() === $password) {
+            if ($user->getEmail() === $email) {
                 $userIn = $user;
                 break;
             }
         }
+
         if (!$userIn) {
-            return false;
+            return [false,'Login ou mot de passe incorrect'];
         }
-        return true;
+
+        if ($userIn->getPassword() !== $password) {
+            return [false, "Votre mot de passe  n'est pas valide"];
+        }
+
+        return [true, "Utilisateur connecté"];
     }
 
 }
 
 
-class User {
+class UserInMemory {
     private string $email;
     private string $password;
     public function __construct(string $email, string $password) {
