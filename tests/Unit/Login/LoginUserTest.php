@@ -44,7 +44,7 @@ class LoginUserTest extends TestCase
         $loginUser = new LoginUser($this->authRepository);
         $loginResponse = $loginUser->__invoke($loginCommand);
         $this->assertFalse($loginResponse->auth?->isLogged());
-        $this->assertEquals("Votre mot de passe  n'est pas valide", $loginResponse->auth?->loggedMessage());
+        $this->assertEquals("Votre mot de passe n'est pas valide", $loginResponse->auth?->loggedMessage());
     }
 
     public function test_user_login_with_invalid_email() {

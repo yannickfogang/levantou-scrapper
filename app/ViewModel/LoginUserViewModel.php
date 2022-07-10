@@ -5,7 +5,7 @@ namespace App\ViewModel;
 use Illuminate\Http\JsonResponse;
 use Module\Auth\useCases\Login\LoginResponse;
 
-class LoginUserViewModel
+class LoginUserViewModel extends ViewModel
 {
     public string $message;
     public bool $isLogged;
@@ -28,7 +28,7 @@ class LoginUserViewModel
      */
     public function viewModel(): JsonResponse
     {
-        return response()->json(
+        return $this->response(
             [
                 'isLogged' => $this->isLogged,
                 'message' => $this->message

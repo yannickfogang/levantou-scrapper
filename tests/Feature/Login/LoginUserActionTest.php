@@ -24,12 +24,41 @@ class LoginUserActionTest extends TestCase
             );
     }
 
-    public function test_user_can_login_with_wrong_email() {
-        $response = $this->post('/login', ['email' => 'testgmail.com', 'password' => '123456']);
+    public function test_user_login_with_invalide_email_credentials() {
+        $response = $this->post('/login', ['email' => 'tests@gmail.com', 'password' => '123456']);
         $response->assertStatus(200)
             ->assertJson(
-                ['message' => "Cet adresse email : testgmail.com n'est pas valide", 'isLogged' => false]
+                ['message' => 'Login ou mot de passe incorrect', 'isLogged' => false]
             );
+    }
+
+    public function test_user_login_with_invalide_password_credentials() {
+        $response = $this->post('/login', ['email' => 'test@gmail.com', 'password' => '12345456']);
+        $response->assertStatus(200)
+            ->assertJson(
+                ['message' => "Votre mot de passe n'est pas valide", 'isLogged' => false]
+            );
+    }
+
+    public function test_user_can_login_with_invalide_email() {
+        $response = $this->postJson('/login', ['email' => 'testgmail.com', 'password' => '123456']);
+        $response->assertStatus(422);
+        $response->assertJsonValidationErrorFor('email');
+        $response->assertJsonValidationErrors(['email' => "Votre adresse email n'est pas valide"]);
+    }
+
+    public function test_user_login_with_empty_email() {
+        $response = $this->postJson('/login', ['email' => '', 'password' => '123456']);
+        $response->assertStatus(422);
+        $response->assertJsonValidationErrorFor('email');
+        $response->assertJsonValidationErrors(['email' => 'Veuillez entrer votre adresse email']);
+    }
+
+    public function test_user_login_with_empty_password() {
+        $response = $this->postJson('/login', ['email' => 'testes@gmail.com', 'password' => '']);
+        $response->assertStatus(422);
+        $response->assertJsonValidationErrorFor('password');
+        $response->assertJsonValidationErrors(['password' => 'Veuillez entrer votre mot de passe']);
     }
 
 }

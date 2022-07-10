@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Factories\LoginUserFactory;
+use App\Http\Request\LoginUserRequest;
 use App\ViewModel\LoginUserViewModel;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
@@ -14,7 +15,7 @@ use Module\Auth\useCases\Login\LoginUser;
 class LoginUserAction
 {
     public function __invoke(
-        Request   $request,
+        LoginUserRequest $request,
         LoginUser $loginUser
     ): JsonResponse
     {

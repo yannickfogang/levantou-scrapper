@@ -75,7 +75,7 @@ class Auth
         }
 
         if ($authResult->getPassword() !== $this->password) {;
-            $this->loggedMessage = "Votre mot de passe  n'est pas valide";
+            $this->loggedMessage = "Votre mot de passe n'est pas valide";
             return;
         }
 
