@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Auth\LoginUserAction;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -17,3 +18,4 @@ Route::get('/', function () {
     return view('welcome');
 });
 
+Route::post('/login', LoginUserAction::class);
