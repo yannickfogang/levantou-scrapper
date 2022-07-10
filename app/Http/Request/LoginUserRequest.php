@@ -2,7 +2,9 @@
 
 namespace App\Http\Request;
 
+use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Http\Exceptions\HttpResponseException;
 use JetBrains\PhpStorm\ArrayShape;
 
 class LoginUserRequest extends FormRequest
@@ -13,6 +15,13 @@ class LoginUserRequest extends FormRequest
         return true;
     }
 
+    /**
+     * @throws HttpResponseException
+     */
+    protected function failedValidation(Validator $validator)
+    {
+        throw new HttpResponseException(response()->json($validator->errors()), 200);
+    }
 
     #[ArrayShape(['email.required' => "string", 'email.email' => "string", 'password.required' => "string"])]
     public function messages(): array

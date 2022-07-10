@@ -15,9 +15,11 @@ class AuthRepositoryInMemory implements AuthRepository
 
     public function __construct()
     {
-        $this->users[] = new UserInMemory('test@gmail.com', '123456');
-        $this->users[] = new UserInMemory('test1@gmail.com', '123456');
-        $this->users[] = new UserInMemory('test2@gmail.com', '123456');
+        $passwordHash = new PasswordProviderMemory();
+
+        $this->users[] = new UserInMemory('test@gmail.com', $passwordHash->crypt('123456'));
+        $this->users[] = new UserInMemory('test1@gmail.com', $passwordHash->crypt('123456'));
+        $this->users[] = new UserInMemory('test2@gmail.com', $passwordHash->crypt('123456'));
     }
 
     public function getByCredentials(Auth $auth): AuthResult

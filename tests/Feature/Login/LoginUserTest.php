@@ -11,6 +11,8 @@ use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Module\Auth\useCases\Login\LoginUser;
 use Module\Infrastructure\Auth\AuthRepositoryEloquent;
+use Module\Infrastructure\Auth\PasswordProviderMemory;
+use Module\Infrastructure\Auth\PasswordProviderLaravel;
 use Tests\TestCase;
 use Tests\Unit\Login\LoginCommandBuilder;
 
@@ -23,21 +25,30 @@ class LoginUserTest extends TestCase
      * @var Collection|HasFactory|Model|mixed
      */
     private mixed $defaultUser;
+    private PasswordProviderMemory $passwordAuth;
+    private PasswordProviderLaravel $passwordProvider;
 
     public function setUp(): void
     {
         parent::setUp();
         $this->authRepository = new AuthRepositoryEloquent();
-        $this->defaultUser = User::factory()->create(['email' => 'test@gmail.com', 'password' => '123456']);
+        $this->passwordProvider = new PasswordProviderLaravel();
+        $this->defaultUser = User::factory()
+            ->create(
+                [
+                    'email' => 'test@gmail.com',
+                    'password' => $this->passwordProvider->crypt('123456')
+                ]
+            );
     }
 
     public function test_user_can_login() {
 
         $loginCommand = LoginCommandBuilder::asLogin()
             ->withEmail($this->defaultUser->email)
-            ->withPassword($this->defaultUser->password)
+            ->withPassword('123456')
             ->build();
-        $loginUser = new LoginUser($this->authRepository);
+        $loginUser = new LoginUser($this->authRepository, $this->passwordProvider);
         $loginResponse = $loginUser->__invoke($loginCommand);
         $this->assertNotNull($loginResponse->auth);
         $this->assertTrue($loginResponse->auth?->isLogged());
@@ -48,7 +59,7 @@ class LoginUserTest extends TestCase
         $loginCommand = LoginCommandBuilder::asLogin()
             ->withEmail('teste@gmail.com')
             ->build();
-        $loginUser = new LoginUser($this->authRepository);
+        $loginUser = new LoginUser($this->authRepository, $this->passwordProvider);
         $loginResponse = $loginUser->__invoke($loginCommand);
         $this->assertNotNull($loginResponse->auth);
         $this->assertFalse($loginResponse->auth?->isLogged());

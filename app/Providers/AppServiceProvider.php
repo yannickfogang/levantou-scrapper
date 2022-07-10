@@ -4,7 +4,9 @@ namespace App\Providers;
 
 use Illuminate\Support\ServiceProvider;
 use Module\Auth\useCases\Login\AuthRepository;
+use Module\Auth\useCases\Login\PasswordProvider;
 use Module\Infrastructure\Auth\AuthRepositoryEloquent;
+use Module\Infrastructure\Auth\PasswordProviderLaravel;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -16,6 +18,7 @@ class AppServiceProvider extends ServiceProvider
     public function register()
     {
         $this->app->bind(AuthRepository::class, AuthRepositoryEloquent::class);
+        $this->app->bind(PasswordProvider::class, PasswordProviderLaravel::class);
     }
 
     /**

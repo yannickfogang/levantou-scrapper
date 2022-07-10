@@ -10,24 +10,31 @@ class Auth
     private string $password;
     private bool $isLogged;
     private string $loggedMessage;
+    private string $passwordHash;
+    private PasswordProvider $passwordProvider;
 
-    private function __construct(string $email, string $password)
+    private function __construct()
     {
-        $this->email = $email;
-        $this->password = $password;
         $this->isLogged = false;
     }
 
     /**
      * @param string $email
-     * @param $password
+     * @param string $password
+     * @param PasswordProvider $passwordProvider
      * @return Auth
      */
-    public static function compose(string $email, $password): Auth
+    public static function compose(string $email, string $password, PasswordProvider $passwordProvider): Auth
     {
+
+        $passwordHash = $passwordProvider->crypt($password);
         $self = new static($email, $password);
+        $self->password = $password;
+        $self->email = $email;
+        $self->passwordProvider = $passwordProvider;
         $self->validateEmail();
         $self->validatePassword();
+
         return $self;
     }
 
@@ -60,21 +67,22 @@ class Auth
     }
 
     /**
-     * @return string
+     * @param AuthResult $authResult
+     * @return void
      */
-    public function getPassword(): string
-    {
-        return $this->password;
-    }
-
-    public function login(AuthResult $authResult)
+    public function login(AuthResult $authResult): void
     {
         if (!$authResult->getEmail()) {
             $this->loggedMessage = 'Login ou mot de passe incorrect';
             return;
         }
 
-        if ($authResult->getPassword() !== $this->password) {;
+        if (
+            !$this->passwordProvider->check(
+                $this->password,
+                $authResult->getPassword()
+            )
+        ) {
             $this->loggedMessage = "Votre mot de passe n'est pas valide";
             return;
         }
@@ -99,4 +107,11 @@ class Auth
         return $this->loggedMessage;
     }
 
+    /**
+     * @return string
+     */
+    public function passwordHash(): string
+    {
+        return $this->passwordHash;
+    }
 }

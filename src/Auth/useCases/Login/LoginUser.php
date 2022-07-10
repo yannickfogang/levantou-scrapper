@@ -9,9 +9,11 @@ final class LoginUser
 {
 
     private AuthRepository $authRepository;
+    private PasswordProvider $passwordProvider;
 
-    public function __construct(AuthRepository $authRepository) {
+    public function __construct(AuthRepository $authRepository, PasswordProvider $password) {
         $this->authRepository = $authRepository;
+        $this->passwordProvider = $password;
     }
 
     /**
@@ -20,7 +22,7 @@ final class LoginUser
      */
     public function __invoke(LoginCommand $loginCommand): LoginResponse {
         $response = new LoginResponse();
-        $auth = Auth::compose($loginCommand->email, $loginCommand->password);
+        $auth = Auth::compose($loginCommand->email, $loginCommand->password, $this->passwordProvider);
         $authResult = $this->authRepository->getByCredentials($auth);
         $auth->login($authResult);
         $response->auth = $auth;
