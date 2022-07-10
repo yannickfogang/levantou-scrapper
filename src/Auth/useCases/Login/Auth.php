@@ -8,11 +8,14 @@ class Auth
 {
     private string $email;
     private string $password;
+    private bool $isLogged;
+    private string $loggedMessage;
 
     private function __construct(string $email, string $password)
     {
         $this->email = $email;
         $this->password = $password;
+        $this->isLogged = false;
     }
 
     /**
@@ -64,22 +67,36 @@ class Auth
         return $this->password;
     }
 
-    public function login(AuthResult $authResult, LoginResponse $response): LoginResponse
+    public function login(AuthResult $authResult)
     {
         if (!$authResult->getEmail()) {
-            $response->message = 'Login ou mot de passe incorrect';
-            return $response;
+            $this->loggedMessage = 'Login ou mot de passe incorrect';
+            return;
         }
 
-        if ($authResult->getPassword() !== $this->password) {
-            $response->message = "Votre mot de passe  n'est pas valide";
-            return $response;
+        if ($authResult->getPassword() !== $this->password) {;
+            $this->loggedMessage = "Votre mot de passe  n'est pas valide";
+            return;
         }
 
-        $response->message = 'Utilisateur connecté';
-        $response->isLogged = true;
-        return $response;
+        $this->loggedMessage = 'Utilisateur connecté';
+        $this->isLogged = true;
     }
 
+    /**
+     * @return bool
+     */
+    public function isLogged(): bool
+    {
+        return $this->isLogged;
+    }
+
+    /**
+     * @return string
+     */
+    public function loggedMessage(): string
+    {
+        return $this->loggedMessage;
+    }
 
 }

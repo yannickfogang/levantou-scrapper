@@ -22,7 +22,9 @@ final class LoginUser
         $response = new LoginResponse();
         $auth = Auth::compose($loginCommand->email, $loginCommand->password);
         $authResult = $this->authRepository->getByCredentials($auth);
-        return $auth->login($authResult, $response);
+        $auth->login($authResult);
+        $response->auth = $auth;
+        return $response;
     }
 
 }

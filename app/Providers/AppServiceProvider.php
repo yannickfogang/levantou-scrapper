@@ -3,6 +3,8 @@
 namespace App\Providers;
 
 use Illuminate\Support\ServiceProvider;
+use Module\Auth\useCases\Login\AuthRepository;
+use Module\Infrastructure\Auth\AuthRepositoryEloquent;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -13,7 +15,7 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        //
+        $this->app->bind(AuthRepository::class, AuthRepositoryEloquent::class);
     }
 
     /**
