@@ -3,8 +3,8 @@
 namespace App\Providers;
 
 use Illuminate\Support\ServiceProvider;
-use Module\Auth\useCases\Login\AuthRepository;
-use Module\Auth\useCases\Login\PasswordProvider;
+use Module\Domain\Auth\AuthRepository;
+use Module\Domain\Auth\PasswordProvider;
 use Module\Infrastructure\Auth\AuthRepositoryEloquent;
 use Module\Infrastructure\Auth\PasswordProviderLaravel;
 

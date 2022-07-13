@@ -2,7 +2,7 @@
 
 namespace Tests\Unit\Login;
 
-use Module\Auth\useCases\Login\LoginCommand;
+use Module\Application\Auth\Login\LoginCommand;
 
 class LoginCommandBuilder extends LoginCommand
 {

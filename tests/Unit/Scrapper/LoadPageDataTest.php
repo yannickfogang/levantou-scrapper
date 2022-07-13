@@ -21,19 +21,6 @@ class LoadPageDataTest extends TestCase
 
     public function test_can_load_page_to_extract_data()
     {
-        $filePath = null;
-        try {
-            $filePath = $this->scrapperApi->loadPage($this->url, 'gb');
-        } catch (\Exception $e) {
-            $content = $e;
-        }
-        $this->assertFileExists($filePath);
+        $product = $this->scrapperApi->extractProduct($this->url, 'gb');
     }
-
-    public function test_extract_content() {
-        $basePath = base_path() . '/scrapper/work/page.html';
-        $contentParse = $this->scrapperApi->extractContent($basePath);
-        $this->assertTrue($contentParse);
-    }
-
 }

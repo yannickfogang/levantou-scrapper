@@ -2,7 +2,7 @@
 
 namespace Module\Infrastructure\Auth;
 
-use Module\Auth\useCases\Login\PasswordProvider;
+use Module\Domain\Auth\PasswordProvider;
 
 class PasswordProviderMemory implements PasswordProvider
 {

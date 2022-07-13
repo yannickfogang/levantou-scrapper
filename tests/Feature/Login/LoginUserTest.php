@@ -3,16 +3,14 @@
 namespace Tests\Feature\Login;
 
 use App\Models\User;
-use Database\Factories\UserFactory;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use Module\Auth\useCases\Login\LoginUser;
+use Module\Application\Auth\Login\LoginUser;
 use Module\Infrastructure\Auth\AuthRepositoryEloquent;
-use Module\Infrastructure\Auth\PasswordProviderMemory;
 use Module\Infrastructure\Auth\PasswordProviderLaravel;
+use Module\Infrastructure\Auth\PasswordProviderMemory;
 use Tests\TestCase;
 use Tests\Unit\Login\LoginCommandBuilder;
 

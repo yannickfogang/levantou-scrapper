@@ -2,9 +2,8 @@
 
 namespace Tests\Unit\Login;
 
-use Module\Auth\Exceptions\ErrorAuthException;
-use Module\Auth\useCases\Login\LoginCommand;
-use Module\Auth\useCases\Login\LoginUser;
+use Module\Application\Auth\Login\LoginUser;
+use Module\Domain\Auth\Exceptions\ErrorAuthException;
 use Module\Infrastructure\Auth\AuthRepositoryInMemory;
 use Module\Infrastructure\Auth\PasswordProviderMemory;
 use Tests\TestCase;

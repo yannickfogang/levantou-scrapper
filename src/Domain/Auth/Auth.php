@@ -1,8 +1,8 @@
 <?php
 
-namespace Module\Auth\useCases\Login;
+namespace Module\Domain\Auth;
 
-use Module\Auth\Exceptions\ErrorAuthException;
+use Module\Domain\Auth\Exceptions\ErrorAuthException;
 
 class Auth
 {

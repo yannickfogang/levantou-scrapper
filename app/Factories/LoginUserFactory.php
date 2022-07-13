@@ -3,7 +3,7 @@
 namespace App\Factories;
 
 use Illuminate\Http\Request;
-use Module\Auth\useCases\Login\LoginCommand;
+use Module\Application\Auth\Login\LoginCommand;
 
 class LoginUserFactory
 {

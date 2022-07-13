@@ -2,9 +2,9 @@
 
 namespace Module\Infrastructure\Auth;
 
-use Module\Auth\useCases\Login\Auth;
-use Module\Auth\useCases\Login\AuthRepository;
-use Module\Auth\useCases\Login\AuthResult;
+use Module\Domain\Auth\Auth;
+use Module\Domain\Auth\AuthRepository;
+use Module\Domain\Auth\AuthResult;
 
 class AuthRepositoryInMemory implements AuthRepository
 {

@@ -4,6 +4,7 @@ namespace Module\Infrastructure\Scrapper;
 
 use Goutte\Client;
 use Illuminate\Support\Facades\App;
+use Module\Domain\Product\Product;
 use Module\Domain\Product\ScrapperApi;
 use Symfony\Component\DomCrawler\Crawler;
 
@@ -16,64 +17,25 @@ class ScrapperWebScrappingApi implements ScrapperApi
         $this->curl = new $curl;
     }
 
-    /**
-     * @throws \Exception
-     */
-    public function loadPage(string $url, string $countryCode): string
+    public function extractProduct($url, $countryCode): Product
     {
-        $basePath = $this->basePath();
-        if ($this->checkIfFileAlreadyLoad()) {
-            return $basePath . '/page.html';
-        }
-        if (!is_dir($basePath)) {
-            mkdir($basePath);
-        }
-        $content = $this->curl->Call($url, $countryCode);
-        $this->saveContent($basePath, $content);
-        return $basePath . '/page.html';
-    }
-
-    /**
-     * @param string $page
-     * @return bool
-     */
-    public function extractContent(string $page): bool
-    {
-        //{"title": {"selector": "span#productTitle", 'output': "html"}}
-    }
-
-    private function saveContent($dir, $contents)
-    {
-        $file = $dir . "/page.html";
-        file_put_contents($file, $contents);
-    }
-
-    /**
-     * @return bool
-     */
-    private function checkIfFileAlreadyLoad(): bool
-    {
-        $date = date('dmY');
-        $basePath = base_path() . '/scrapper/file/' . $date;
-        if (!is_dir($basePath)) {
-            return false;
-        }
-        if (!file_exists($basePath . '/page.html')) {
-            return false;
-        }
-        return true;
-    }
-
-    /**
-     * @return string
-     */
-    private function basePath(): string
-    {
-        $date = date('dmY');
-        if (App::environment() != 'prod') {
-            return base_path() . '/scrapper/work';
-        }
-        return base_path() . '/scrapper/file/' . $date;
+        $arrExtractRule = [
+            'title' => ['selector' => '#productTitle', 'output' => 'text'],
+            'categories' => [
+                'selector' => 'div#wayfinding-breadcrumbs_feature_div a.a-color-tertiary',
+                'output' => 'text'
+            ],
+            'description' => [
+                'selector' => 'div#feature-bullets ul.a-unordered-list',
+                'output' => 'html'
+            ],
+            'price' => [
+                'selector' => 'div#corePrice_feature_div span.a-offscreen',
+                'output' => 'text'
+            ]
+        ];
+        $content = $this->curl->Call($url, $countryCode, $arrExtractRule);
+        dd(json_decode($content, true));
     }
 }
 

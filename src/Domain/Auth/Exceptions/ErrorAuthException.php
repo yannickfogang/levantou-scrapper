@@ -1,6 +1,6 @@
 <?php
 
-namespace Module\Auth\Exceptions;
+namespace Module\Domain\Auth\Exceptions;
 
 
 final class ErrorAuthException extends \RuntimeException

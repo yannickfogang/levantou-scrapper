@@ -3,7 +3,7 @@
 namespace Module\Infrastructure\Auth;
 
 use Illuminate\Support\Facades\Hash;
-use Module\Auth\useCases\Login\PasswordProvider;
+use Module\Domain\Auth\PasswordProvider;
 
 class PasswordProviderLaravel implements PasswordProvider
 {

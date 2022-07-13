@@ -1,6 +1,6 @@
 <?php
 
-namespace Module\Auth\useCases\Login;
+namespace Module\Application\Auth\Login;
 
 class LoginCommand
 {

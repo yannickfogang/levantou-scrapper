@@ -8,15 +8,15 @@ class Curl
     const API_URL = 'https://api.webscrapingapi.com/v1';
     const API_KEY = 'cTcty1xNDaGDKXICgDnI5u3BX9v7vKvc';
 
-    public function Call($url, $countryCode): bool|string
+    public function Call($url, $countryCode, array $extractRule): bool|string
     {
+        $jsonExtractRule = json_encode($extractRule);
         $curl = curl_init();
-
         $url = self::API_URL
             . "?url=". urlencode($url)
             ."&api_key=". self::API_KEY
             ."&device=desktop&proxy_type=datacenter"
-            ."&country=" . $countryCode;
+            ."&country=" . $countryCode . '&extract_rules=' . urlencode($jsonExtractRule);
 
         curl_setopt_array($curl, [
             CURLOPT_URL => $url,

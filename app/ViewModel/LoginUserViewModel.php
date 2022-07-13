@@ -3,7 +3,7 @@
 namespace App\ViewModel;
 
 use Illuminate\Http\JsonResponse;
-use Module\Auth\useCases\Login\LoginResponse;
+use Module\Application\Auth\Login\LoginResponse;
 
 class LoginUserViewModel extends ViewModel
 {

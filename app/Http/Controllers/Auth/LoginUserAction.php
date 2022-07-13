@@ -6,11 +6,10 @@ use App\Factories\LoginUserFactory;
 use App\Http\Request\LoginUserRequest;
 use App\ViewModel\LoginUserViewModel;
 use Illuminate\Http\JsonResponse;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Module\Auth\Exceptions\ErrorAuthException;
-use Module\Auth\useCases\Login\LoginCommand;
-use Module\Auth\useCases\Login\LoginUser;
+use Module\Application\Auth\Login\LoginCommand;
+use Module\Application\Auth\Login\LoginUser;
+use Module\Domain\Auth\Exceptions\ErrorAuthException;
 
 class LoginUserAction
 {

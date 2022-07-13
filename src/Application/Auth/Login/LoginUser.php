@@ -1,9 +1,11 @@
 <?php
 declare(strict_types=1);
 
-namespace Module\Auth\useCases\Login;
+namespace Module\Application\Auth\Login;
 
-use Module\Auth\Exceptions\ErrorAuthException;
+use Module\Domain\Auth\Auth;
+use Module\Domain\Auth\AuthRepository;
+use Module\Domain\Auth\PasswordProvider;
 
 final class LoginUser
 {
