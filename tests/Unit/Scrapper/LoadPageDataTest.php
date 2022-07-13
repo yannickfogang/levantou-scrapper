@@ -19,14 +19,21 @@ class LoadPageDataTest extends TestCase
         $this->scrapperApi = new ScrapperWebScrappingApi($curl);
     }
 
-    public function test_can_load_page_to_extract_data() {
-       try  {
-           $content = $this->scrapperApi->loadPage($this->url, 'gb');
-           dd($content);
-       } catch (\Exception $e) {
+    public function test_can_load_page_to_extract_data()
+    {
+        $filePath = null;
+        try {
+            $filePath = $this->scrapperApi->loadPage($this->url, 'gb');
+        } catch (\Exception $e) {
             $content = $e;
-       }
-        $this->assertEquals("Hello", $content);
+        }
+        $this->assertFileExists($filePath);
+    }
+
+    public function test_extract_content() {
+        $basePath = base_path() . '/scrapper/work/page.html';
+        $contentParse = $this->scrapperApi->extractContent($basePath);
+        $this->assertTrue($contentParse);
     }
 
 }
