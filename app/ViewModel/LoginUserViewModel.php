@@ -22,17 +22,4 @@ class LoginUserViewModel extends ViewModel
         $this->message = $auth?->loggedMessage();
         $this->isLogged = $auth?->isLogged();
     }
-
-    /**
-     * @return JsonResponse
-     */
-    public function viewModel(): JsonResponse
-    {
-        return $this->response(
-            [
-                'isLogged' => $this->isLogged,
-                'message' => $this->message
-            ]
-        );
-    }
 }

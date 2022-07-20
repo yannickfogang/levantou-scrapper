@@ -32,7 +32,7 @@ class SaveProductHandler
             $saveProductCommand->sender_on_store
         );
 
-        $response->isSave = $this->productRepository->add($product);
+        $response->isSave = $this->productRepository->save($product);
 
         return $response;
     }

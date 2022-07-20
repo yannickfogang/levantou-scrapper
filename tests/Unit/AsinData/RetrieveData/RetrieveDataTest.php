@@ -2,11 +2,11 @@
 
 namespace AsinData\RetrieveData;
 
-use Tests\Unit\AsinData\Builder\SaveProductCommandBuild;
 use Module\Application\Product\Command\SaveProductHandler;
-use Module\Domain\Product\ErrorSaveProductArgumentsException;
+use Module\Domain\Product\Exception\ErrorSaveProductArgumentsException;
 use Module\Infrastructure\Product\ProductRepositoryInMemory;
 use Tests\TestCase;
+use Tests\Unit\AsinData\Builder\SaveProductCommandBuild;
 
 class RetrieveDataTest extends TestCase
 {

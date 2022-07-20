@@ -4,5 +4,6 @@ namespace Module\Domain\Product;
 
 interface ProductRepository
 {
-    public function add(Product $product): bool;
+    public function save(Product $product): bool;
+
 }

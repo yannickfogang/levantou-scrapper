@@ -9,7 +9,7 @@ class ProductRepositoryInMemory implements ProductRepository
 {
     private array $products = [];
 
-    public function add(Product $product): bool
+    public function save(Product $product): bool
     {
         $this->products[] = $product;
         return true;
